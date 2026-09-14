@@ -1,0 +1,19 @@
+[project]
+name = "langchain-tools-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=1.4.0",
+    "langchain-openai>=1.6.2",
+    "langgraph>=1.2.11",
+    "python-dotenv>=1.2.3",
+    "requests>=2.34.2",
+    "yfinance>=1.7.0",
+]
+
+[dependency-groups]
+dev = [
+    "langgraph-cli[inmem]>=0.4.31",
+]
