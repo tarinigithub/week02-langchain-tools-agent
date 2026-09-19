@@ -1,6 +1,9 @@
 {
-    "dependencies": ["."],
+    "dependencies": [
+        "."
+    ],
     "graphs": {
+        "tools_agent": "./main.py:agent",
         "branching_agent": "./langgraph_branching_agent/agent.py:graph"
     },
     "env": "./.env"
