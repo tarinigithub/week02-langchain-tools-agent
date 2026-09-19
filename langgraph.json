@@ -4,7 +4,8 @@
     ],
     "graphs": {
         "tools_agent": "./main.py:agent",
-        "branching_agent": "./langgraph_branching_agent/agent.py:graph"
+        "branching_agent": "./langgraph_branching_agent/agent.py:graph",
+        "parallel_agent": "./langgraph_branching_agent/parallel_agent.py:graph"
     },
     "env": "./.env"
 }
