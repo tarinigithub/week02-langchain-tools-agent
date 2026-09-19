@@ -38,6 +38,27 @@ Embeddings are Pinecone-hosted because Groq does not serve an embedding model, s
 `PINECONE_API_KEY` is the only key needed for indexing. The model's 2,048-token limit
 comfortably fits the longest page of this 10-K, so no page is truncated.
 
+What `ingest.py` does, in order:
+
+1. `PdfReader` → one `Document` per page, with `{"source": ..., "page": n}` metadata.
+2. `pc.create_index(...)` if `apple-10k` does not exist yet, then wait until it is ready.
+3. `PineconeVectorStore.add_documents(docs, ids=["page-1", ...])` — Pinecone embeds each
+   page and upserts it. Stable IDs make re-runs idempotent.
+
+Verify the index from the Pinecone console (Indexes → `apple-10k` → Browse), or:
+
+```bash
+uv run python -c "
+from dotenv import load_dotenv; load_dotenv()
+import os; from pinecone import Pinecone
+idx = Pinecone(api_key=os.environ['PINECONE_API_KEY']).Index('apple-10k')
+print(idx.describe_index_stats())
+print(idx.fetch(ids=['page-26']).vectors['page-26'].metadata['page'])
+"
+# {'dimension': 1024, 'total_vector_count': 80, ...}
+# 26.0
+```
+
 ### 2. A tool to query the vector store — `search_apple_10k` in [`main.py`](main.py)
 
 ```python
