@@ -144,6 +144,44 @@ total 1.54s
 uv run langgraph_branching_agent/parallel_agent.py
 ```
 
+#### Sample topics
+
+Both LangGraph scripts prompt `Enter a topic:` — they want a **report topic**, not a
+question, so the topics below work for either one. Here the topic decides the branch, and
+the branch decides the three section headings the workers write:
+
+| Classified as | Sections written |
+|---|---|
+| `technical` | Architecture and how it works · Implementation challenges and trade-offs · Recommendations and next steps |
+| `business` | Market overview and opportunity · Financial implications and risks · Recommendations and next steps |
+
+Topics that classify as **technical**:
+
+```
+Migrating a monolithic Django app to microservices on Kubernetes
+Using Pinecone as a vector store for retrieval-augmented generation
+Adding distributed tracing to a Python microservices stack
+Choosing between gRPC and REST for internal service communication
+Building a CI/CD pipeline with GitHub Actions and Docker
+Caching strategies for a high-traffic PostgreSQL read workload
+```
+
+Topics that classify as **business**:
+
+```
+Apple's services revenue growth strategy
+Expanding a SaaS product into the European market
+Adopting a usage-based pricing model for a developer tools company
+The competitive landscape for AI coding assistants
+Acquiring a smaller competitor to enter the healthcare vertical
+Remote-first hiring and its impact on operating costs
+```
+
+`Should we build or buy an internal LLM gateway?` is a useful edge case: it reads as both
+technical and business, so it shows the orchestrator committing to a single branch. The
+classifier only checks whether the model's one-word answer contains `technical`, so
+anything else — including an unclear answer — falls through to `business`.
+
 Both LangGraph scripts export their diagram (`graph.mmd` / `graph.png` and
 `parallel_graph.mmd` / `parallel_graph.png`) each time they run.
 
