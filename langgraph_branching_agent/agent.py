@@ -26,6 +26,16 @@ llm = ChatOpenAI(
 )
 
 
+class TopicInput(TypedDict):
+    """Graph input: the topic is the only thing the caller supplies.
+
+    Declaring it as `input_schema` keeps `category` and `report` out of the
+    input, so LangGraph Studio asks for a topic instead of all three keys.
+    """
+
+    topic: str
+
+
 class State(TypedDict):
     topic: str
     category: str
@@ -77,7 +87,7 @@ def business_report(state: State) -> dict:
 
 
 graph = (
-    StateGraph(State)
+    StateGraph(State, input_schema=TopicInput)
     .add_node("classifier", classifier)
     .add_node("technical", technical_report)
     .add_node("business", business_report)

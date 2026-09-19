@@ -43,6 +43,16 @@ SECTION_PLANS = {
 }
 
 
+class TopicInput(TypedDict):
+    """Graph input: the topic is the only thing the caller supplies.
+
+    Declaring it as `input_schema` keeps the graph's working keys out of the
+    input, so LangGraph Studio asks for a topic instead of all of them.
+    """
+
+    topic: str
+
+
 class State(TypedDict):
     topic: str
     category: str
@@ -98,7 +108,7 @@ def aggregator(state: State) -> dict:
 
 
 graph = (
-    StateGraph(State)
+    StateGraph(State, input_schema=TopicInput)
     .add_node("orchestrator", orchestrator)
     .add_node("worker_1", worker_1)
     .add_node("worker_2", worker_2)
